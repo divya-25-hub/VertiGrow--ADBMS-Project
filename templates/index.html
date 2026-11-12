@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VERTIGROW | Urban Farming Management</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <aside class="sidebar" id="sidebar">
+        <a href="#" class="brand" onclick="showSection('dashboard'); return false;">
+            <div class="brand-icon">V</div>
+            <div>
+                <strong>VERTIGROW</strong>
+                <small>URBAN FARMING</small>
+            </div>
+        </a>
+
+        <div class="nav-label">WORKSPACE</div>
+        <button class="nav-btn active" data-section="dashboard">
+            <span>▦</span> Dashboard
+        </button>
+        <button class="nav-btn" data-section="farms">
+            <span>⌂</span> Farms
+        </button>
+        <button class="nav-btn" data-section="crops">
+            <span>♧</span> Crops
+        </button>
+        <button class="nav-btn" data-section="harvests">
+            <span>▤</span> Harvest Reports
+        </button>
+        <button class="nav-btn" data-section="resources">
+            <span>⚙</span> Resources
+        </button>
+
+        <div class="sidebar-bottom">
+            <div class="connection-line">
+                <span class="status-dot"></span>
+                <span id="connection-label">Checking database...</span>
+            </div>
+            <small>MySQL · VERTIGROW_DB</small>
+        </div>
+    </aside>
+
+    <main class="main">
+        <header class="topbar">
+            <button class="mobile-menu" id="menu-toggle" aria-label="Toggle menu">☰</button>
+            <div class="heading">
+                <span class="eyebrow">FARM MANAGEMENT SYSTEM</span>
+                <h1 id="page-title">Dashboard Overview</h1>
+            </div>
+            <div class="top-actions">
+                <span class="today-label" id="today-label"></span>
+                <button class="icon-btn" id="refresh-button" title="Refresh dashboard">↻</button>
+                <div class="profile-chip">
+                    <div class="avatar">V</div>
+                    <div><strong>Administrator</strong><small>Farm workspace</small></div>
+                </div>
+            </div>
+        </header>
+
+        <div id="app-message" class="message hidden" role="status"></div>
+
+        <!-- DASHBOARD -->
+        <section id="dashboard" class="page-section">
+            <div class="hero">
+                <div class="hero-copy">
+                    <span class="hero-tag">GROW SMARTER · LIVE DATABASE</span>
+                    <h2>Growing smarter,<br>every day.</h2>
+                    <p>Manage your farms, monitor crop records and explore harvest data in one connected workspace.</p>
+                    <button class="hero-button" onclick="showSection('harvests')">
+                        Explore harvest reports <span>→</span>
+                    </button>
+                </div>
+                <div class="hero-art" aria-hidden="true">
+                    <div class="sun"></div>
+                    <div class="art-circle circle-one"></div>
+                    <div class="art-circle circle-two"></div>
+                    <div class="plant plant-one"><i></i><b></b><span></span></div>
+                    <div class="plant plant-two"><i></i><b></b><span></span></div>
+                    <div class="plant plant-three"><i></i><b></b><span></span></div>
+                    <div class="plant-pot"></div>
+                </div>
+            </div>
+
+            <div class="section-heading">
+                <div>
+                    <span class="eyebrow">YOUR OPERATIONS</span>
+                    <h2>Database at a glance</h2>
+                    <p>A real-time overview of your stored records.</p>
+                </div>
+                <button class="secondary-btn" onclick="refreshDashboard()">↻ Refresh data</button>
+            </div>
+
+            <div class="stats-grid">
+                <article class="stat-card card-green">
+                    <div class="stat-top"><span>Farms</span><span class="stat-icon">⌂</span></div>
+                    <h3 id="farm-count">—</h3><p>Registered farms</p>
+                    <div class="stat-bottom"><span>FARM</span><span>Database records</span></div>
+                </article>
+                <article class="stat-card card-blue">
+                    <div class="stat-top"><span>Growing Sections</span><span class="stat-icon">▦</span></div>
+                    <h3 id="section-count">—</h3><p>Organized farm sections</p>
+                    <div class="stat-bottom"><span>SECTION</span><span>Database records</span></div>
+                </article>
+                <article class="stat-card card-purple">
+                    <div class="stat-top"><span>Crop Varieties</span><span class="stat-icon">♧</span></div>
+                    <h3 id="crop-count">—</h3><p>Managed crop records</p>
+                    <div class="stat-bottom"><span>CROP</span><span>Database records</span></div>
+                </article>
+                <article class="stat-card card-orange">
+                    <div class="stat-top"><span>Harvest Records</span><span class="stat-icon">▤</span></div>
+                    <h3 id="harvest-count">—</h3><p>Recorded harvests</p>
+                    <div class="stat-bottom"><span>HARVEST</span><span>Database records</span></div>
+                </article>
+                <article class="stat-card card-blue">
+                    <div class="stat-top"><span>Equipment</span><span class="stat-icon">⚙</span></div>
+                    <h3 id="equipment-count">—</h3><p>Equipment records</p>
+                    <div class="stat-bottom"><span>EQUIPMENT</span><span>Database records</span></div>
+                </article>
+                <article class="stat-card card-green">
+                    <div class="stat-top"><span>Employees</span><span class="stat-icon">♙</span></div>
+                    <h3 id="employee-count">—</h3><p>Team records</p>
+                    <div class="stat-bottom"><span>EMPLOYEE</span><span>Database records</span></div>
+                </article>
+                <article class="stat-card card-purple">
+                    <div class="stat-top"><span>Customers</span><span class="stat-icon">♧</span></div>
+                    <h3 id="customer-count">—</h3><p>Customer records</p>
+                    <div class="stat-bottom"><span>CUSTOMER</span><span>Database records</span></div>
+                </article>
+                <article class="stat-card card-orange">
+                    <div class="stat-top"><span>Orders</span><span class="stat-icon">▧</span></div>
+                    <h3 id="orders-count">—</h3><p>Customer orders</p>
+                    <div class="stat-bottom"><span>ORDERS</span><span>Database records</span></div>
+                </article>
+            </div>
+
+            <div class="content-grid">
+                <article class="panel">
+                    <div class="panel-heading">
+                        <div><h2>Recent Harvests</h2><p>From your Harvest_Summary database view</p></div>
+                        <button class="text-btn" onclick="showSection('harvests')">View reports →</button>
+                    </div>
+                    <div id="recent-harvests" class="table-wrap">
+                        <div class="loading">Loading harvest records...</div>
+                    </div>
+                </article>
+
+                <article class="panel quick-panel">
+                    <div class="panel-heading"><div><h2>Quick navigation</h2><p>Explore your records</p></div></div>
+                    <button class="quick-link" onclick="showSection('farms')"><span class="quick-symbol green-symbol">⌂</span><span class="quick-text"><strong>Farm records</strong><small>Locations and growing areas</small></span><b>→</b></button>
+                    <button class="quick-link" onclick="showSection('crops')"><span class="quick-symbol purple-symbol">♧</span><span class="quick-text"><strong>Crop varieties</strong><small>Growth cycles and temperatures</small></span><b>→</b></button>
+                    <button class="quick-link" onclick="showSection('harvests')"><span class="quick-symbol orange-symbol">▤</span><span class="quick-text"><strong>Harvest reports</strong><small>Quantities and harvest dates</small></span><b>→</b></button>
+                    <button class="quick-link" onclick="showSection('resources')"><span class="quick-symbol blue-symbol">⚙</span><span class="quick-text"><strong>Farm resources</strong><small>Equipment and team records</small></span><b>→</b></button>
+                </article>
+            </div>
+        </section>
+
+        <!-- FARMS -->
+        <section id="farms" class="page-section hidden">
+            <div class="page-intro">
+                <span class="eyebrow">FARM OPERATIONS</span>
+                <h2>Farm Records</h2>
+                <p>Explore registered farms, locations and total growing area.</p>
+            </div>
+            <article class="panel">
+                <div class="table-toolbar">
+                    <div><h2>All farms</h2><p id="farms-total">Loading records...</p></div>
+                    <div class="toolbar-actions">
+                        <input class="search-input" id="farms-search" placeholder="Search farms..." aria-label="Search farms">
+                        <button class="crud-primary" id="add-farm-button" type="button">+ Add Farm</button>
+                    </div>
+                </div>
+                <div id="farms-table" class="table-wrap"><div class="loading">Loading farm records...</div></div>
+            </article>
+        </section>
+
+        <!-- CROPS -->
+        <section id="crops" class="page-section hidden">
+            <div class="page-intro">
+                <span class="eyebrow">CROP MANAGEMENT</span>
+                <h2>Crop Varieties</h2>
+                <p>Review crop growth cycles and optimal temperatures.</p>
+            </div>
+            <article class="panel">
+                <div class="table-toolbar">
+                    <div><h2>Crop catalogue</h2><p id="crops-total">Loading records...</p></div>
+                    <div class="toolbar-actions">
+                        <input class="search-input" id="crops-search" placeholder="Search crops..." aria-label="Search crops">
+                        <button class="crud-primary" id="add-crop-button" type="button">+ Add Crop</button>
+                    </div>
+                </div>
+                <div id="crops-table" class="table-wrap"><div class="loading">Loading crop records...</div></div>
+            </article>
+        </section>
+
+        <!-- HARVESTS -->
+        <section id="harvests" class="page-section hidden">
+            <div class="page-intro">
+                <span class="eyebrow">PRODUCTION INSIGHTS</span>
+                <h2>Harvest Reports</h2>
+                <p>Harvest quantities, crops, farms and sections from your existing SQL view.</p>
+            </div>
+            <article class="panel">
+                <div class="table-toolbar">
+                    <div><h2>Harvest summary</h2><p id="harvests-total">Loading records...</p></div>
+                    <input class="search-input" id="harvests-search" placeholder="Search harvests..." aria-label="Search harvests">
+                </div>
+                <div id="harvests-table" class="table-wrap"><div class="loading">Loading harvest reports...</div></div>
+            </article>
+        </section>
+
+        <!-- RESOURCES -->
+        <section id="resources" class="page-section hidden">
+            <div class="page-intro">
+                <span class="eyebrow">PEOPLE & ASSETS</span>
+                <h2>Farm Resources</h2>
+                <p>Browse equipment and employee records stored in VERTIGROW_DB.</p>
+            </div>
+            <article class="panel customer-panel">
+                <div class="table-toolbar">
+                    <div><h2>Growing Sections</h2><p id="sections-total">Loading records...</p></div>
+                    <input class="search-input" id="sections-search" placeholder="Search sections..." aria-label="Search sections">
+                </div>
+                <div id="sections-table" class="table-wrap"><div class="loading">Loading section records...</div></div>
+            </article>
+            <div class="resource-grid">
+                <article class="panel">
+                    <div class="table-toolbar">
+                        <div><h2>Equipment</h2><p id="equipment-total">Loading records...</p></div>
+                        <input class="search-input" id="equipment-search" placeholder="Search equipment..." aria-label="Search equipment">
+                    </div>
+                    <div id="equipment-table" class="table-wrap"><div class="loading">Loading...</div></div>
+                </article>
+                <article class="panel">
+                    <div class="table-toolbar">
+                        <div><h2>Employees</h2><p id="employees-total">Loading records...</p></div>
+                        <input class="search-input" id="employees-search" placeholder="Search employees..." aria-label="Search employees">
+                    </div>
+                    <div id="employees-table" class="table-wrap"><div class="loading">Loading...</div></div>
+                </article>
+            </div>
+            <article class="panel customer-panel">
+                <div class="table-toolbar">
+                    <div><h2>Customers</h2><p id="customers-total">Loading records...</p></div>
+                    <input class="search-input" id="customers-search" placeholder="Search customers..." aria-label="Search customers">
+                </div>
+                <div id="customers-table" class="table-wrap"><div class="loading">Loading...</div></div>
+            </article>
+            <article class="panel customer-panel">
+                <div class="table-toolbar">
+                    <div><h2>Orders</h2><p id="orders-total">Loading records...</p></div>
+                    <input class="search-input" id="orders-search" placeholder="Search orders..." aria-label="Search orders">
+                </div>
+                <div id="orders-table" class="table-wrap"><div class="loading">Loading...</div></div>
+            </article>
+        </section>
+
+        <footer class="footer">
+            <span>VERTIGROW <span class="footer-dot">●</span> Urban Farming Management System</span>
+            <span>Powered by Flask & MySQL</span>
+        </footer>
+    </main>
+
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>
